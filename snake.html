@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Cobrinha - Zenith</title>
+    <style>
+        body { margin: 0; display: flex; min-height: 100vh; align-items: center; justify-content: center; background: radial-gradient(circle at top, #2b2f4c, #090b18); color: #f8fafc; font-family: Inter, Arial, sans-serif; }
+        .game-shell { width: min(640px, 90vw); padding: 24px; background: rgba(15, 23, 42, 0.92); border-radius: 24px; border: 1px solid rgba(148, 163, 184, 0.15); box-shadow: 0 30px 90px rgba(0,0,0,0.35); text-align: center; }
+        canvas { width: 100%; max-width: 560px; background: #141a2c; border-radius: 20px; display: block; margin: 0 auto 20px; }
+        h1 { margin: 0 0 12px; font-size: 2rem; }
+        p { margin: 0 0 18px; color: #94a3b8; }
+        .info { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+        .info span { background: rgba(148, 163, 184, 0.12); padding: 10px 14px; border-radius: 12px; font-size: 0.95rem; }
+        button { border: none; background: #2563eb; color: white; padding: 12px 20px; font-size: 1rem; border-radius: 14px; cursor: pointer; transition: transform .15s ease; }
+        button:hover { transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+    <div class="game-shell">
+        <h1>Jogo da Cobrinha</h1>
+        <p>Use as setas do teclado para mover a cobra. Coma frutas e tente bater a sua pontuação.</p>
+        <div class="info">
+            <span>Pontuação: <strong id="score">0</strong></span>
+            <span>Velocidade: <strong>Rápida</strong></span>
+        </div>
+        <canvas id="snake" width="560" height="560"></canvas>
+        <button onclick="restartGame()">Reiniciar</button>
+    </div>
+    <script>
+        const canvas = document.getElementById('snake');
+        const ctx = canvas.getContext('2d');
+        const scale = 28;
+        const rows = canvas.height / scale;
+        const cols = canvas.width / scale;
+        let snake = [{ x: 8, y: 8 }];
+        let velocity = { x: 0, y: 0 };
+        let apple = { x: 12, y: 12 };
+        let score = 0;
+        let gameOver = false;
+
+        window.addEventListener('keydown', changeDirection);
+
+        function draw() {
+            if (gameOver) return;
+            requestAnimationFrame(draw);
+            update();
+            drawGame();
+        }
+
+        function update() {
+            const head = { x: snake[0].x + velocity.x, y: snake[0].y + velocity.y };
+            if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows || collision(head)) {
+                gameOver = true;
+                showGameOver();
+                return;
+            }
+            snake.unshift(head);
+            if (head.x === apple.x && head.y === apple.y) {
+                score += 1;
+                document.getElementById('score').textContent = score;
+                placeApple();
+            } else {
+                snake.pop();
+            }
+        }
+
+        function collision(head) {
+            return snake.some((segment, index) => index > 0 && segment.x === head.x && segment.y === head.y);
+        }
+
+        function drawGame() {
+            ctx.fillStyle = '#090b18';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#22c55e';
+            snake.forEach(segment => ctx.fillRect(segment.x * scale, segment.y * scale, scale - 2, scale - 2));
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(apple.x * scale, apple.y * scale, scale - 2, scale - 2);
+        }
+
+        function placeApple() {
+            apple = {
+                x: Math.floor(Math.random() * cols),
+                y: Math.floor(Math.random() * rows)
+            };
+            if (snake.some(segment => segment.x === apple.x && segment.y === apple.y)) {
+                placeApple();
+            }
+        }
+
+        function changeDirection(event) {
+            const key = event.key;
+            if (key === 'ArrowUp' && velocity.y === 0) velocity = { x: 0, y: -1 };
+            if (key === 'ArrowDown' && velocity.y === 0) velocity = { x: 0, y: 1 };
+            if (key === 'ArrowLeft' && velocity.x === 0) velocity = { x: -1, y: 0 };
+            if (key === 'ArrowRight' && velocity.x === 0) velocity = { x: 1, y: 0 };
+        }
+
+        function showGameOver() {
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f8fafc';
+            ctx.font = '36px Inter, Arial, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 12);
+            ctx.font = '18px Inter, Arial, sans-serif';
+            ctx.fillText('Pressione Reiniciar para jogar novamente', canvas.width / 2, canvas.height / 2 + 24);
+        }
+
+        function restartGame() {
+            snake = [{ x: 8, y: 8 }];
+            velocity = { x: 0, y: 0 };
+            score = 0;
+            gameOver = false;
+            document.getElementById('score').textContent = score;
+            placeApple();
+            draw();
+        }
+
+        restartGame();
+    </script>
+</body>
+</html>

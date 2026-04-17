@@ -1,0 +1,55 @@
+Zenith Navigator - Histórico do Projeto
+
+Data inicial: 17/04/2026
+
+1. Estado inicial
+- Arquivos existentes: main.py, home_page.html, home_page.css
+- main.py original apenas abria home_page.html no navegador padrão
+- home_page.html estava vazio e home_page.css estava sem conteúdo
+
+2. Implementação do navegador GUI
+- Atualizado main.py para usar PyQt6 e PyQt6-WebEngine
+- Criado o navegador ZenithNavigator com:
+  - barra de endereço
+  - botões Voltar, Avançar, Recarregar e Home
+  - menu principal com Arquivo, Visualizar e Extensões
+  - DevTools integrado
+  - configurações básicas via diálogo
+- Adicionada normalização de URLs e suporte a arquivos locais
+- Configurado carregamento da homepage local home_page.html
+
+3. Atualização da homepage local
+- home_page.html revisado para ser uma página de início moderna
+- home_page.css preenchido com estilo visual agradável
+- homepage contém cards para Começar, Extensões e Modo Dev
+
+4. Recursos locais adicionais
+- Criado localpy.py com função calculate_expression para cálculo seguro
+- Criada calc.html como uma calculadora local na web
+- Criada snake.html com jogo da cobrinha em JavaScript
+- Criada offline.html para exibir quando não há conexão
+
+5. Preparação para GitHub
+- Adicionado README.md com instruções de uso e lista de arquivos
+- Adicionado .gitignore para ignorar __pycache__, arquivos Python compilados e metadados de editor
+- Adicionado requirements.txt com dependências PyQt6 e PyQt6-WebEngine
+
+6. Atualização de recursos avançados
+- Adicionado suporte a múltiplas abas com monitor de uso simulado por guia
+- Adicionado menus para Apps, idioma e seleção de engine
+- Adicionado console avançado com comandos internos
+- Adicionada configuração de permissões para câmera, microfone, localização e notificações
+- Adicionado jogo do Dino local
+- Adicionado instalador de projeto (`installer.py`)
+- Adicionado homepage estilo Google com barra de pesquisa web
+- Adicionado estilo visual com transparência e blur para aparência mais moderna
+
+7. Verificações realizadas
+- Sintaxe de main.py verificada com py -m py_compile
+- Nenhum erro de sintaxe relatado
+
+8. Observações
+- O navegador agora suporta vários mini-apps locais, console e configurações avançadas
+- Use `py main.py` para iniciar e `py installer.py` para configurar o ambiente
+
+Fim do histórico.

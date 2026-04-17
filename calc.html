@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Local - Zenith</title>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: Inter, Arial, sans-serif; margin: 0; }
+        .container { max-width: 420px; margin: 4rem auto; padding: 24px; background: rgba(15, 23, 42, 0.95); border-radius: 24px; box-shadow: 0 24px 80px rgba(15, 23, 42, 0.65); }
+        .display { width: 100%; height: 72px; border-radius: 18px; border: none; margin-bottom: 18px; padding: 16px; font-size: 2rem; background: #0f172a; color: #f8fafc; text-align: right; box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.18); }
+        .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        button { border: none; border-radius: 16px; padding: 20px 0; font-size: 1rem; cursor: pointer; background: #1e293b; color: #e2e8f0; transition: transform .15s ease, background .15s ease; }
+        button:hover { transform: translateY(-1px); background: #334155; }
+        button.operator { background: #334155; }
+        button.equal { grid-column: span 2; background: #2563eb; color: white; }
+        h1 { margin-top: 0; font-size: 1.6rem; }
+        p { margin: 0 0 18px; color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora Local</h1>
+        <p>Use esta calculadora local para operações rápidas, sem precisar de internet.</p>
+        <input class="display" id="display" readonly value="0" />
+        <div class="buttons">
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button class="operator" onclick="press('/')">÷</button>
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button class="operator" onclick="press('*')">×</button>
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button class="operator" onclick="press('-')">−</button>
+            <button onclick="press('0')">0</button>
+            <button onclick="press('.')">.</button>
+            <button class="equal" onclick="calculate()">=</button>
+            <button class="operator" onclick="press('+')">+</button>
+            <button class="operator" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="backspace()">⌫</button>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById('display');
+        let expression = '';
+
+        function press(value) {
+            if (expression === '0' && value !== '.') {
+                expression = value;
+            } else {
+                expression += value;
+            }
+            display.value = expression;
+        }
+
+        function clearDisplay() {
+            expression = '';
+            display.value = '0';
+        }
+
+        function backspace() {
+            expression = expression.slice(0, -1);
+            display.value = expression || '0';
+        }
+
+        function calculate() {
+            try {
+                expression = expression.replace(/×/g, '*').replace(/÷/g, '/');
+                const result = eval(expression || '0');
+                display.value = result;
+                expression = String(result);
+            } catch {
+                display.value = 'Erro';
+                expression = '';
+            }
+        }
+    </script>
+</body>
+</html>

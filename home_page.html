@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith Navigator</title>
+    <link rel="stylesheet" href="home_page.css">
+</head>
+<body>
+    <div class="google-shell">
+        <div class="google-logo">
+            <span>Z</span><span>e</span><span>n</span><span>i</span><span>t</span><span>h</span>
+        </div>
+
+        <form id="search-form" class="search-box" onsubmit="performSearch(event)">
+            <input id="search-input" type="text" placeholder="Pesquisar na web" autocomplete="off" />
+        </form>
+
+        <div class="search-buttons">
+            <button type="button" onclick="performSearch();">Pesquisar</button>
+            <button type="button" onclick="openUrl('https://www.google.com/doodles')">Estou com sorte</button>
+        </div>
+
+        <div class="quick-links">
+            <a href="calc.html">Calculadora</a>
+            <a href="snake.html">Cobrinha</a>
+            <a href="dino.html">Dino</a>
+            <a href="offline.html">Offline</a>
+        </div>
+    </div>
+
+    <script>
+        function performSearch(event) {
+            if (event) event.preventDefault();
+            const query = document.getElementById('search-input').value.trim();
+            if (!query) return;
+            window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+        }
+
+        function openUrl(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
